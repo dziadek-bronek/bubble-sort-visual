@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <unistd.h>
 
 int nScreenWidth = 50;
@@ -20,20 +21,17 @@ int main() {
 
 // setup   
     int data[nScreenWidth];
+	std::srand(std::time(nullptr));
     for(int i = 0; i < nScreenWidth; ++i)
-        data[i] = (rand() % nScreenHeightDec);
+        data[i] = rand() % nScreenHeight;
 
     // lambda for printing
     auto print = [&]()
     {
         for(int x = 0; x < nScreenWidth; ++x)
         {
-            for(int y = nScreenHeightDec; y >= 0; --y)
-            {
-                if(data[x] <= y)
-                    screen[y * nScreenWidthInc + x] = ' ';
-                else
-                    screen[y * nScreenWidthInc + x] = 'X';
+            for(int y = 0;  y < nScreenHeight; ++y) {
+				screen[y * nScreenWidthInc + x] = (y <= data[x]) ? 'X' : ' ';
             }
         }
 
