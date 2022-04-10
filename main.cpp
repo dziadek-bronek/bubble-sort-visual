@@ -3,35 +3,37 @@
 
 int nScreenWidth = 50;
 int nScreenHeight = 25;
-int nArrSize = nScreenWidth * nScreenHeight;
+
+size_t nScreenWidthInc = nScreenWidth + 1;
+size_t nScreenHeightDec = nScreenHeight - 1;
+
+int nArrSize = nScreenWidthInc * nScreenHeight;
 
 int main() {
 	char screen[nArrSize];
 
-	size_t nScreenWidthDec = nScreenWidth - 1;
-	size_t nScreenHeightDec = nScreenHeight - 1;
 	for(size_t i = 0; i < nArrSize; ++i) screen[i] = ' ';
-	screen[nArrSize - 1] = 0;
 
 	char* lineStart = screen;
-	for(size_t i = 0; i < nScreenHeightDec; ++i, lineStart += nScreenWidth) lineStart[nScreenWidthDec] = '\n';
+	for(size_t i = 0; i < nScreenHeightDec; ++i, lineStart += nScreenWidthInc) lineStart[nScreenWidth] = '\n';
+	screen[nArrSize - 1] = 0;
 
 // setup   
-    int data[nScreenWidthDec];
-    for(int i = 0; i < nScreenWidthDec; ++i)
+    int data[nScreenWidth];
+    for(int i = 0; i < nScreenWidth; ++i)
         data[i] = rand() % nScreenHeight;
 
     // lambda for printing
     auto print = [&]()
     {
-        for(int x = 0; x < nScreenWidthDec; ++x)
+        for(int x = 0; x < nScreenWidth; ++x)
         {
             for(int y = nScreenHeight - 1; y >= 0; --y)
             {
                 if(data[x] <= y)
-                    screen[y * nScreenWidth + x] = 'X';
+                    screen[y * nScreenWidthInc + x] = 'X';
                 else
-                    screen[y * nScreenWidth + x] = ' ';
+                    screen[y * nScreenWidthInc + x] = ' ';
             }
         }
 
@@ -48,7 +50,7 @@ int main() {
         for(i = 0; i < nScreenWidth - 1; i++)
         {
             swapped = false;
-            for(j = 0; j < nScreenWidthDec - i - 1; j++)
+            for(j = 0; j < nScreenWidth - i - 1; j++)
             {
                 if (data[j] > data[j + 1])
                 {
