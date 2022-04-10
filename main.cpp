@@ -16,24 +16,24 @@ int main() {
 
 	char* lineStart = screen;
 	for(size_t i = 0; i < nScreenHeightDec; ++i, lineStart += nScreenWidthInc) lineStart[nScreenWidth] = '\n';
-	screen[nArrSize - 1] = 0;
+	lineStart[-1] = 0;
 
 // setup   
     int data[nScreenWidth];
     for(int i = 0; i < nScreenWidth; ++i)
-        data[i] = rand() % nScreenHeight;
+        data[i] = (rand() % nScreenHeightDec);
 
     // lambda for printing
     auto print = [&]()
     {
         for(int x = 0; x < nScreenWidth; ++x)
         {
-            for(int y = nScreenHeight - 1; y >= 0; --y)
+            for(int y = nScreenHeightDec; y >= 0; --y)
             {
                 if(data[x] <= y)
-                    screen[y * nScreenWidthInc + x] = 'X';
-                else
                     screen[y * nScreenWidthInc + x] = ' ';
+                else
+                    screen[y * nScreenWidthInc + x] = 'X';
             }
         }
 
