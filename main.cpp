@@ -1,15 +1,19 @@
 #include <iostream>
-#include <Windows.h>
-#include <thread>
+#include <unistd.h>
 
 char sAppName[] { "Bubble Sort Visualization" };
-int nScreenWidth = 120;
-int nScreenHeight = 40;
+int nScreenWidth = 80;
+int nScreenHeight = 30;
 int nArrSize = nScreenWidth * nScreenHeight;
 
 int main() {
+	/*
     SMALL_RECT rectWindow = { 0, 0, static_cast<short>(nScreenWidth - 1), static_cast<short>(nScreenHeight - 1) };
-    CHAR_INFO* screen = new CHAR_INFO[nArrSize];
+	*/
+	char* screen = new char[nArrSize + 1];
+
+	for(size_t i = 0; i < nArrSize; ++i) screen[i] = ' ';
+	/*
 	for(int i = 0; i < nArrSize; i++)
     {
         screen[i].Char.AsciiChar = ' ';
@@ -17,6 +21,7 @@ int main() {
     }
     HANDLE hConsole = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
 	SetConsoleActiveScreenBuffer(hConsole);
+	*/
 
 // setup   
     int data[nScreenWidth];
@@ -31,33 +36,23 @@ int main() {
             for(int y = nScreenHeight - 1; y >= 0; --y)
             {
                 if(data[x] <= y)
-                    screen[y * nScreenWidth + x].Attributes = 0x00F0;
+                    screen[y * nScreenWidth + x] = 'X';
                 else
-                    screen[y * nScreenWidth + x].Attributes = 0x0000;
+                    screen[y * nScreenWidth + x] = ' ';
             }
         }
 
-        char s[128];
-		sprintf_s(s, 128, " | %s | ", sAppName);
-        SetConsoleTitleA(s);
-
-        // display frame
-	    WriteConsoleOutput(hConsole, screen, { static_cast<short>(nScreenWidth), static_cast<short>(nScreenHeight) }, { 0,0 }, &rectWindow);
+		char* lineStart = screen;;
+		std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+		for(size_t i = 0; i < nScreenHeight; lineStart += nScreenWidth, ++i) {
+			char* tmpIdx = lineStart + nScreenWidth;
+			char tmp = *tmpIdx;
+			*tmpIdx = 0;
+			std::cout << lineStart << std::endl;
+			*tmpIdx = tmp;
+		}
+	    // WriteConsoleOutput(hConsole, screen, { static_cast<short>(nScreenWidth), static_cast<short>(nScreenHeight) }, { 0,0 }, &rectWindow);
     };
-
-    while(true)
-    {
-    // input
-        if(GetAsyncKeyState('R'))           // reset
-            for(int i = 0; i < nScreenWidth; ++i)
-                data[i] = rand() % nScreenHeight;
-
-
-        if(!GetAsyncKeyState(VK_SPACE))     // dont start until space is pressed
-        {
-            print();
-            continue;
-        }                                      
 
     // logic
         //sort start
@@ -79,17 +74,19 @@ int main() {
 
             if(swapped == false)
                 break;
+			usleep(500000);
         }
 
     // display
         // write to title bar of console     
+		/*
         char s[128];
-		sprintf_s(s, 128, " | %s | ", sAppName);
+		sprintf(s, " | %s | ", sAppName);
         SetConsoleTitleA(s);
 
         // display frame
 	    WriteConsoleOutput(hConsole, screen, { static_cast<short>(nScreenWidth), static_cast<short>(nScreenHeight) }, { 0,0 }, &rectWindow);
-    }
+		*/
 
     delete[] screen;
     
